@@ -49,7 +49,8 @@ Run 'make down' or 'docker-compose down' will stop the running containers.
 
 ## References
 
-- [Blog post crpd-evpn-vxlan-type5 by Marcel Wiget](https://marcelwiget.blog/2021/07/01/crpd-evpn-vxlan-type5/)
+
+- [Blog post crpd-evpn-vxlan-type5 by Marcel Wiget](https://marcelwiget.blog/2021/07/01/crpd-evpn-vxlan-type-5/)
 - [Day One eBook: Data Center Deployment with EVPN/VXLAN by Deepti Chandra](https://www.juniper.net/documentation/en_US/day-one-books/TW_DCDeployment.v2.pdf)
 - [Juniper cRPD technical documentation](https://www.juniper.net/documentation/product/us/en/crpd)
 - [https://github.com/mwiget/link-containers](https://github.com/mwiget/link-containers)
