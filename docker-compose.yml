@@ -1,0 +1,84 @@
+version: "2.4"
+
+services:
+
+  r1:
+    image: crpd:21.2R1.10
+    hostname: r1
+    container_name: r1
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
+      - net.ipv6.conf.all.forwarding=1
+    privileged: true
+    volumes:
+      - ${PWD}/r1:/config
+
+  r2:
+    image: crpd:21.2R1.10
+    hostname: r2
+    container_name: r2
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
+      - net.ipv6.conf.all.forwarding=1
+    privileged: true
+    volumes:
+      - ${PWD}/r2:/config
+
+  c1:
+    build: client
+    hostname: c1
+    container_name: c1
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
+      - net.ipv6.conf.all.forwarding=1
+    privileged: true
+    command: /bin/bash /config/network-init.sh
+    volumes:
+      - ${PWD}/c1:/config
+
+  c2:
+    build: client
+    hostname: c2
+    container_name: c2
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
+      - net.ipv6.conf.all.forwarding=1
+    privileged: true
+    command: /bin/bash /config/network-init.sh
+    volumes:
+      - ${PWD}/c2:/config
+
+  c3:
+    build: client
+    hostname: c3
+    container_name: c3
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
+      - net.ipv6.conf.all.forwarding=1
+    privileged: true
+    command: /bin/bash /config/network-init.sh
+    volumes:
+      - ${PWD}/c3:/config
+
+  c4:
+    build: client
+    hostname: c4
+    container_name: c4
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
+      - net.ipv6.conf.all.forwarding=1
+    privileged: true
+    command: /bin/bash /config/network-init.sh
+    volumes:
+      - ${PWD}/c4:/config
+
+  links:
+    build: links
+    container_name: links
+    privileged: true
+    network_mode: none
+    pid: "host"
+    restart: "no"
+    command: "r1/r2/3000 r1/r2/3000 r1/c1/1500 r1/c3/1500 r2/c2/1500 r2/c4/1500"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

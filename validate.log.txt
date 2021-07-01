@@ -1,0 +1,304 @@
+docker-compose down
+docker-compose build
+Step 1/4 : FROM ubuntu:20.04
+ ---> 1e4467b07108
+Step 2/4 : RUN apt-get update   && apt-get -y --no-install-recommends install   netsniff-ng iproute2 net-tools iputils-ping avahi-autoipd   tcpdump bwm-ng ethtool fping vim-tiny iptables iperf3   && rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 8e503ec3000b
+Step 3/4 : RUN mv /usr/sbin/tcpdump /bin/
+ ---> Using cache
+ ---> fec188847e25
+Step 4/4 : WORKDIR /root
+ ---> Using cache
+ ---> d1b61c0f28ae
+
+Successfully built d1b61c0f28ae
+Successfully tagged crpd-evpn-vxlan-type5_c1:latest
+Step 1/4 : FROM ubuntu:20.04
+ ---> 1e4467b07108
+Step 2/4 : RUN apt-get update   && apt-get -y --no-install-recommends install   netsniff-ng iproute2 net-tools iputils-ping avahi-autoipd   tcpdump bwm-ng ethtool fping vim-tiny iptables iperf3   && rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 8e503ec3000b
+Step 3/4 : RUN mv /usr/sbin/tcpdump /bin/
+ ---> Using cache
+ ---> fec188847e25
+Step 4/4 : WORKDIR /root
+ ---> Using cache
+ ---> d1b61c0f28ae
+
+Successfully built d1b61c0f28ae
+Successfully tagged crpd-evpn-vxlan-type5_c2:latest
+Step 1/4 : FROM ubuntu:20.04
+ ---> 1e4467b07108
+Step 2/4 : RUN apt-get update   && apt-get -y --no-install-recommends install   netsniff-ng iproute2 net-tools iputils-ping avahi-autoipd   tcpdump bwm-ng ethtool fping vim-tiny iptables iperf3   && rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 8e503ec3000b
+Step 3/4 : RUN mv /usr/sbin/tcpdump /bin/
+ ---> Using cache
+ ---> fec188847e25
+Step 4/4 : WORKDIR /root
+ ---> Using cache
+ ---> d1b61c0f28ae
+
+Successfully built d1b61c0f28ae
+Successfully tagged crpd-evpn-vxlan-type5_c3:latest
+Step 1/4 : FROM ubuntu:20.04
+ ---> 1e4467b07108
+Step 2/4 : RUN apt-get update   && apt-get -y --no-install-recommends install   netsniff-ng iproute2 net-tools iputils-ping avahi-autoipd   tcpdump bwm-ng ethtool fping vim-tiny iptables iperf3   && rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 8e503ec3000b
+Step 3/4 : RUN mv /usr/sbin/tcpdump /bin/
+ ---> Using cache
+ ---> fec188847e25
+Step 4/4 : WORKDIR /root
+ ---> Using cache
+ ---> d1b61c0f28ae
+
+Successfully built d1b61c0f28ae
+Successfully tagged crpd-evpn-vxlan-type5_c4:latest
+Step 1/5 : FROM alpine:3.13
+ ---> 7731472c3f2a
+Step 2/5 : RUN apk add py3-dockerpty py3-pyroute2
+ ---> Using cache
+ ---> c2e265a59edd
+Step 3/5 : COPY add_link.py /
+ ---> Using cache
+ ---> f9d1c44a0f57
+Step 4/5 : RUN chmod a+rx /add_link.py && mkdir /var/run/netns
+ ---> Using cache
+ ---> bc0b4dea05a9
+Step 5/5 : ENTRYPOINT ["/usr/bin/python3", "/add_link.py"]
+ ---> Using cache
+ ---> 64d0aa08deb5
+
+Successfully built 64d0aa08deb5
+Successfully tagged crpd-evpn-vxlan-type5_links:latest
+docker-compose up -d
+sleep 5
+bash ./add-license-key.sh
+checking for installed cRPD licenses ...
+adding license key junos_sfnt.lic to r1 ...
+|85da1f84-7623-4e90-b8a7-12fe4b7b0e89: successfully added
+add license complete (no errors)
+adding license key junos_sfnt.lic to r2 ...
+|85da1f84-7623-4e90-b8a7-12fe4b7b0e89: successfully added
+add license complete (no errors)
+
+bash ./validate.sh
+checking for installed cRPD licenses ...
+r1 License SKU: JNX_LICFEAT_CRPD_STANDARD
+r2 License SKU: JNX_LICFEAT_CRPD_STANDARD
+
+1: waiting for all isis neighbors to be Up ...
+7: waiting for all isis neighbors to be Up ...
+12: waiting for all isis neighbors to be Up ...
+18: waiting for all isis neighbors to be Up ...
+24: waiting for all isis neighbors to be Up ...
+29: waiting for all isis neighbors to be Up ...
+35: waiting for all isis neighbors to be Up ...
+40: waiting for all isis neighbors to be Up ...
+r1> cli show isis adj ...
+Interface             System         L State        Hold (secs) SNPA
+net1                  r2             2  Up                    7  ea:d8:db:7a:d3:7
+net2                  r2             2  Up                   22  5a:3c:23:ed:fa:e5
+
+r1> cli show bgp summary...
+Threading mode: BGP I/O
+Default eBGP mode: advertise - accept, receive - accept
+Groups: 1 Peers: 1 Down peers: 0
+Table          Tot Paths  Act Paths Suppressed    History Damp State    Pending
+bgp.l3vpn.0          
+                       6          0          0          0          0          0
+bgp.l3vpn-inet6.0    
+                       6          0          0          0          0          0
+bgp.evpn.0           
+                       4          4          0          0          0          0
+Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn State|#Active/Received/Accepted/Damped...
+10.0.0.13             64512         15         15       0       0          36 Establ
+  bgp.l3vpn.0: 0/6/6/0
+  bgp.l3vpn-inet6.0: 0/6/6/0
+  bgp.evpn.0: 4/4/4/0
+  blue.inet.0: 0/3/3/0
+  yellow.inet.0: 0/3/3/0
+  blue.inet6.0: 0/3/3/0
+  yellow.inet6.0: 0/3/3/0
+  blue.evpn.0: 2/2/2/0
+  yellow.evpn.0: 2/2/2/0
+
+r1> cli show evpn l3-context ...
+L3 context                      Type  Adv      Encap  VNI/Label  Router MAC/GW intf
+blue                            Cfg   Direct   VXLAN  10002      92:d1:86:8c:d2:17
+yellow                          Cfg   Direct   VXLAN  10003      92:d1:86:8c:d2:17
+
+r2> cli show evpn l3-context ...
+L3 context                      Type  Adv      Encap  VNI/Label  Router MAC/GW intf
+blue                            Cfg   Direct   VXLAN  10002      ce:5e:b9:b5:42:fb
+yellow                          Cfg   Direct   VXLAN  10003      ce:5e:b9:b5:42:fb
+
+r1> cli show evpn ip-prefix-database
+L3 context: blue
+
+IPv4->EVPN Exported Prefixes
+Prefix                                       EVPN route status
+1.1.1.0/30                                   Created
+
+IPv6->EVPN Exported Prefixes
+Prefix                                       EVPN route status
+abcd::101:100/126                            Created
+
+EVPN->IPv4 Imported Prefixes
+Prefix                                       Etag
+1.1.2.0/30                                   0       
+  Route distinguisher    VNI/Label  Router MAC         Nexthop/Overlay GW/ESI   Route-Status  Reject-Reason
+  10.0.0.13:1            10002      ce:5e:b9:b5:42:fb  10.0.0.13                 Accepted      n/a                                    
+
+EVPN->IPv6 Imported Prefixes
+Prefix                                       Etag
+abcd::101:200/126                            0       
+  Route distinguisher    VNI/Label  Router MAC         Nexthop/Overlay GW/ESI   Route-Status  Reject-Reason
+  10.0.0.13:1            10002      ce:5e:b9:b5:42:fb  10.0.0.13                 Accepted      n/a                                    
+
+L3 context: yellow
+
+IPv4->EVPN Exported Prefixes
+Prefix                                       EVPN route status
+1.1.1.0/30                                   Created
+
+IPv6->EVPN Exported Prefixes
+Prefix                                       EVPN route status
+abcd::101:100/126                            Created
+
+EVPN->IPv4 Imported Prefixes
+Prefix                                       Etag
+1.1.2.0/30                                   0       
+  Route distinguisher    VNI/Label  Router MAC         Nexthop/Overlay GW/ESI   Route-Status  Reject-Reason
+  10.0.0.13:2            10003      ce:5e:b9:b5:42:fb  10.0.0.13                 Accepted      n/a                                    
+
+EVPN->IPv6 Imported Prefixes
+Prefix                                       Etag
+abcd::101:200/126                            0       
+  Route distinguisher    VNI/Label  Router MAC         Nexthop/Overlay GW/ESI   Route-Status  Reject-Reason
+  10.0.0.13:2            10003      ce:5e:b9:b5:42:fb  10.0.0.13                 Accepted      n/a                                    
+
+r1:/# ip route show vrf __crpd-vrf1 ...
+1.1.1.0/30 dev net3 proto kernel scope link src 1.1.1.1 
+1.1.1.2 via 1.1.1.2 dev net3 proto 22 
+1.1.2.0/30  encap ip id 10002 src 10.0.0.12 dst 10.0.0.13 ttl 255 tos 0 via 10.0.0.13 dev irb proto 22 onlink 
+
+r1:/# ip route show vrf __crpd-vrf2 ...
+1.1.1.0/30 dev net4 proto kernel scope link src 1.1.1.1 
+1.1.1.2 via 1.1.1.2 dev net4 proto 22 
+1.1.2.0/30  encap ip id 10003 src 10.0.0.12 dst 10.0.0.13 ttl 255 tos 0 via 10.0.0.13 dev irb proto 22 onlink 
+
+r2:/# ip route show vrf __crpd-vrf1 ...
+1.1.1.0/30  encap ip id 10002 src 10.0.0.13 dst 10.0.0.12 ttl 255 tos 0 via 10.0.0.12 dev irb proto 22 onlink 
+1.1.2.0/30 dev net3 proto kernel scope link src 1.1.2.1 
+1.1.2.2 via 1.1.2.2 dev net3 proto 22 
+
+r2:/# ip route show vrf __crpd-vrf2 ...
+1.1.1.0/30  encap ip id 10003 src 10.0.0.13 dst 10.0.0.12 ttl 255 tos 0 via 10.0.0.12 dev irb proto 22 onlink 
+1.1.2.0/30 dev net4 proto kernel scope link src 1.1.2.1 
+1.1.2.2 via 1.1.2.2 dev net4 proto 22 
+
+
+r1:/# ip -6 route show vrf __crpd-vrf1 ...
+anycast abcd::101:100 dev net3 proto kernel metric 0 pref medium
+abcd::101:102 via abcd::101:102 dev net3 proto 22 metric 1024 pref medium
+abcd::101:100/126 dev net3 proto kernel metric 256 pref medium
+abcd::101:200/126  encap ip id 10002 src 10.0.0.12 dst 10.0.0.13 ttl 255 tos 0 via ::ffff:10.0.0.13 dev irb proto 22 metric 1024 onlink pref medium
+anycast fe80:: dev net3 proto kernel metric 0 pref medium
+fe80::/64 dev net3 proto kernel metric 256 pref medium
+multicast ff00::/8 dev net3 proto kernel metric 256 pref medium
+
+r1:/# ip -6 route show vrf __crpd-vrf2 ...
+anycast abcd::101:100 dev net4 proto kernel metric 0 pref medium
+abcd::101:102 via abcd::101:102 dev net4 proto 22 metric 1024 pref medium
+abcd::101:100/126 dev net4 proto kernel metric 256 pref medium
+abcd::101:200/126  encap ip id 10003 src 10.0.0.12 dst 10.0.0.13 ttl 255 tos 0 via ::ffff:10.0.0.13 dev irb proto 22 metric 1024 onlink pref medium
+anycast fe80:: dev net4 proto kernel metric 0 pref medium
+fe80::/64 dev net4 proto kernel metric 256 pref medium
+multicast ff00::/8 dev net4 proto kernel metric 256 pref medium
+
+r2:/# ip -6 route show vrf __crpd-vrf1 ...
+abcd::101:100/126  encap ip id 10002 src 10.0.0.13 dst 10.0.0.12 ttl 255 tos 0 via ::ffff:10.0.0.12 dev irb proto 22 metric 1024 onlink pref medium
+anycast abcd::101:200 dev net3 proto kernel metric 0 pref medium
+abcd::101:202 via abcd::101:202 dev net3 proto 22 metric 1024 pref medium
+abcd::101:200/126 dev net3 proto kernel metric 256 pref medium
+anycast fe80:: dev net3 proto kernel metric 0 pref medium
+fe80::/64 dev net3 proto kernel metric 256 pref medium
+multicast ff00::/8 dev net3 proto kernel metric 256 pref medium
+
+r2:/# ip -6 route show vrf __crpd-vrf2 ...
+abcd::101:100/126  encap ip id 10003 src 10.0.0.13 dst 10.0.0.12 ttl 255 tos 0 via ::ffff:10.0.0.12 dev irb proto 22 metric 1024 onlink pref medium
+anycast abcd::101:200 dev net4 proto kernel metric 0 pref medium
+abcd::101:202 via abcd::101:202 dev net4 proto 22 metric 1024 pref medium
+abcd::101:200/126 dev net4 proto kernel metric 256 pref medium
+anycast fe80:: dev net4 proto kernel metric 0 pref medium
+fe80::/64 dev net4 proto kernel metric 256 pref medium
+multicast ff00::/8 dev net4 proto kernel metric 256 pref medium
+
+ipv4 connectivity test between c1 and c2 ...
+PING 1.1.2.2 (1.1.2.2) 56(84) bytes of data.
+. . . 
+--- 1.1.2.2 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.014/0.052/0.122/0.049 ms, ipg/ewma 0.080/0.097 ms
+
+ipv4 connectivity test between c2 and c3 ...
+PING 1.1.2.2 (1.1.2.2) 56(84) bytes of data.
+. . . 
+--- 1.1.2.2 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.010/0.046/0.114/0.047 ms, ipg/ewma 0.073/0.090 ms
+tcpdump of vxlan traffic between r1 and r2 ...
+04:07:01.212700 92:a6:db:bd:13:d0 > ea:d8:db:7a:d3:07, ethertype IPv4 (0x0800), length 148: 10.0.0.12.37485 > 10.0.0.13.4789: VXLAN, flags [I] (0x08), vni 10003
+92:d1:86:8c:d2:17 > ce:5e:b9:b5:42:fb, ethertype IPv4 (0x0800), length 98: 1.1.1.2 > 1.1.2.2: ICMP echo request, id 16, seq 1, length 64
+04:07:01.212748 ea:d8:db:7a:d3:07 > 92:a6:db:bd:13:d0, ethertype IPv4 (0x0800), length 148: 10.0.0.13.37485 > 10.0.0.12.4789: VXLAN, flags [I] (0x08), vni 10003
+ce:5e:b9:b5:42:fb > 92:d1:86:8c:d2:17, ethertype IPv4 (0x0800), length 98: 1.1.2.2 > 1.1.1.2: ICMP echo reply, id 16, seq 1, length 64
+04:07:01.212773 92:a6:db:bd:13:d0 > ea:d8:db:7a:d3:07, ethertype IPv4 (0x0800), length 148: 10.0.0.12.37485 > 10.0.0.13.4789: VXLAN, flags [I] (0x08), vni 10003
+92:d1:86:8c:d2:17 > ce:5e:b9:b5:42:fb, ethertype IPv4 (0x0800), length 98: 1.1.1.2 > 1.1.2.2: ICMP echo request, id 16, seq 2, length 64
+04:07:01.212781 ea:d8:db:7a:d3:07 > 92:a6:db:bd:13:d0, ethertype IPv4 (0x0800), length 148: 10.0.0.13.37485 > 10.0.0.12.4789: VXLAN, flags [I] (0x08), vni 10003
+ce:5e:b9:b5:42:fb > 92:d1:86:8c:d2:17, ethertype IPv4 (0x0800), length 98: 1.1.2.2 > 1.1.1.2: ICMP echo reply, id 16, seq 2, length 64
+
+running iperf3 test between c1 and c2 for 10 seconds ...
+-----------------------------------------------------------
+Server listening on 5201
+-----------------------------------------------------------
+Accepted connection from 1.1.1.2, port 59048
+[  5] local 1.1.2.2 port 5201 connected to 1.1.1.2 port 59050
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-1.00   sec  3.72 GBytes  32.0 Gbits/sec                  
+[  5]   1.00-2.00   sec  3.77 GBytes  32.4 Gbits/sec                  
+[  5]   2.00-3.00   sec  3.81 GBytes  32.8 Gbits/sec                  
+[  5]   3.00-4.00   sec  3.80 GBytes  32.6 Gbits/sec                  
+[  5]   4.00-5.00   sec  3.68 GBytes  31.7 Gbits/sec                  
+[  5]   5.00-6.00   sec  3.83 GBytes  32.9 Gbits/sec                  
+[  5]   6.00-7.00   sec  3.77 GBytes  32.3 Gbits/sec                  
+[  5]   7.00-8.00   sec  3.71 GBytes  31.9 Gbits/sec                  
+[  5]   8.00-9.00   sec  3.84 GBytes  33.0 Gbits/sec                  
+[  5]   9.00-10.00  sec  3.82 GBytes  32.8 Gbits/sec                  
+[  5]  10.00-10.00  sec   768 KBytes  30.4 Gbits/sec                  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-10.00  sec  37.8 GBytes  32.4 Gbits/sec                  receiver
+Connecting to host 1.1.2.2, port 5201
+[  5] local 1.1.1.2 port 59050 connected to 1.1.2.2 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  3.72 GBytes  31.9 Gbits/sec    0    638 KBytes       
+[  5]   1.00-2.00   sec  3.77 GBytes  32.4 Gbits/sec    0    778 KBytes       
+[  5]   2.00-3.00   sec  3.81 GBytes  32.8 Gbits/sec  266    621 KBytes       
+[  5]   3.00-4.00   sec  3.80 GBytes  32.6 Gbits/sec    0    754 KBytes       
+[  5]   4.00-5.00   sec  3.68 GBytes  31.7 Gbits/sec    0    754 KBytes       
+[  5]   5.00-6.00   sec  3.83 GBytes  32.9 Gbits/sec  267    556 KBytes       
+[  5]   6.00-7.00   sec  3.77 GBytes  32.3 Gbits/sec    0    675 KBytes       
+[  5]   7.00-8.00   sec  3.71 GBytes  31.9 Gbits/sec    0    675 KBytes       
+[  5]   8.00-9.00   sec  3.84 GBytes  33.0 Gbits/sec    0    675 KBytes       
+[  5]   9.00-10.00  sec  3.82 GBytes  32.8 Gbits/sec    0    675 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-10.00  sec  37.8 GBytes  32.4 Gbits/sec  533             sender
+[  5]   0.00-10.00  sec  37.8 GBytes  32.4 Gbits/sec                  receiver
+
+iperf Done.
+
+success in 73 seconds

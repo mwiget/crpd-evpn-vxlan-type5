@@ -1,0 +1,6 @@
+junos_sfnt.lic
+JNX_LICFEAT_CRPD_STANDARD-TRIAL.txt
+license
+juniper.conf.*
+*.pcap
+.env
