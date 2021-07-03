@@ -7,6 +7,8 @@ until ip link show net1 up; do
   sleep 1
 done
 
+ip link set mtu 1500 dev net1
+
 ip addr add 1.1.2.2/30 dev net1
 ip -6 addr add abcd::1.1.2.2/126 dev net1
 

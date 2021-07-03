@@ -1,0 +1,48 @@
+name: vxlan
+
+topology:
+  nodes:
+    r1:
+      kind: crpd
+      image: crpd:21.2R1.10
+      license: junos_sfnt.lic
+      cmd: /config/license-init.sh
+      config: r1/juniper.conf
+    r2:
+      kind: crpd
+      image: crpd:21.2R1.10
+      license: junos_sfnt.lic
+      cmd: /config/license-init.sh
+      config: r2/juniper.conf
+    c1:
+      kind: linux
+      image: ghcr.io/hellt/network-multitool
+      cmd: /config/network-init.sh
+      binds:
+        - c1:/config
+    c2:
+      kind: linux
+      image: ghcr.io/hellt/network-multitool
+      cmd: /config/network-init.sh
+      binds:
+        - c2:/config
+    c3:
+      kind: linux
+      image: ghcr.io/hellt/network-multitool
+      cmd: /config/network-init.sh
+      binds:
+        - c3:/config
+    c4:
+      kind: linux
+      image: ghcr.io/hellt/network-multitool
+      cmd: /config/network-init.sh
+      binds:
+        - c4:/config
+
+  links:
+    - endpoints: ["r1:net1", "r2:net1"]
+    - endpoints: ["r1:net2", "r2:net2"]
+    - endpoints: ["r1:net3", "c1:net1"]
+    - endpoints: ["r1:net4", "c3:net1"]
+    - endpoints: ["r2:net3", "c2:net1"]
+    - endpoints: ["r2:net4", "c4:net1"]
